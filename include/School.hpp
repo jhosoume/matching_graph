@@ -8,12 +8,12 @@ using ::std::vector;
 class School {
 public:
     School();
-    School(int id, int num_pos, int skills_req);
+    School(int id, int num_pos, vector<int> skills_req);
     int vacancies();
-private:
+    
     int id;
     int num_pos;
-    int skills_req;
+    vector<int> skills_req;
     vector<int> professors;
 };
 
