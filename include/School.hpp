@@ -14,8 +14,9 @@ public:
     School();
     School(int id, int num_pos, vector<int> skills_req);
     int vacancies();
-    void assign_teacher(const int& pos_indx, Teacher& teacher);
+    void assign_teacher(const int& pos_indx, Teacher& teacher, const int& pref);
     bool is_full();
+    int change_teacher(const int& pos_indx, Teacher& teacher, const int& pref);
 
     int id;
     int num_pos;

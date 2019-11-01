@@ -24,11 +24,12 @@ int School::vacancies() {
     return num_pos - occuppied;
 }
 
-void School::assign_teacher(const int& pos_indx, Teacher& teacher) {
+void School::assign_teacher(const int& pos_indx, Teacher& teacher, const int& pref) {
     teacher.assigned = true;
     teacher.matched_school = id;
-    positions.at(pos_indx).teacher = teacher.id;
+    positions.at(pos_indx).teacher = teacher;
     positions.at(pos_indx).matched = true;
+    positions.at(pos_indx).teacher_pref = pref;
 }
 
 bool School::is_full() {
@@ -36,4 +37,14 @@ bool School::is_full() {
         if (!pos.matched) return false;
     }
     return true;
+}
+
+int School::change_teacher(const int& pos_indx, Teacher& teacher, const int& pref) {
+    int old_teacher_id = positions.at(pos_indx).teacher.id;
+    teacher.assigned = true;
+    teacher.matched_school = id;
+    positions.at(pos_indx).teacher = teacher;
+    positions.at(pos_indx).matched = true;
+    positions.at(pos_indx).teacher_pref = pref;
+    return old_teacher_id;
 }

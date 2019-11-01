@@ -1,6 +1,8 @@
 #ifndef POS
 #define POS
 
+#include "Teacher.hpp"
+
 class Position {
 public:
     Position();
@@ -8,7 +10,8 @@ public:
 
     int skill_req;
     bool matched;
-    int teacher; //id
+    Teacher teacher; //id
+    int teacher_pref;
 };
 
 

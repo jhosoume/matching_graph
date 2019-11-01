@@ -2,6 +2,7 @@
 #define REC
 
 #include <vector>
+#include <queue>
 #include <iostream>
 #include <algorithm>
 #include <cstring>
@@ -13,6 +14,7 @@
 
 using ::std::string;
 using ::std::vector;
+using ::std::queue;
 using ::std::cout;
 using ::std::endl;
 using ::std::getline;
@@ -27,7 +29,8 @@ public:
     void read(const string& filename);
     int find_teacher_indx(int teacher_id);
     int find_school_indx(int school_id);
-    bool shouldChange(Position& pos, Teacher& teacher);
+    bool shouldChange(Position& pos, Teacher& teacher, const int& pref);
+    void swap_teacher(School& school, Position& pos);
     void galeShapley();
 
     vector<Teacher> teachers;

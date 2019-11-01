@@ -37,7 +37,7 @@ void Recruiting::show_assignment() const {
     for (School school : schools) {
         cout << "School of id " << school.id << " got the following teachers: " << endl;
         for (Position pos : school.positions) {
-            if (pos.matched) cout << pos.teacher << " ";
+            if (pos.matched) cout << pos.teacher.id << " ";
         }
         cout << endl;
     }
@@ -115,10 +115,24 @@ int Recruiting::find_school_indx(int school_id) {
     return -1;
 }
 
-bool Recruiting::shouldChange(Position& pos, Teacher& teacher) {
-    
+bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) {
+    if (teacher.num_skills != pos.skill_req) return false;
+    // Compares  already in position with teacher that is applying to teacher
+    // Pref is from teacher that is applying
+    if (pos.teacher_pref > pref) return true;
+    return false;
 }
 
 void Recruiting::galeShapley() {
+    queue<int> free_teachers;
+    Teacher teacher;
+    for (int indx = 0; indx < teachers.size(); ++indx) {
+        teacher = teachers.at(indx);
+        if (!teacher.assigned) free_teachers.push(teacher.id);
+    }
+    while(!free_teachers.empty()) {
+        int teacher_indx = free_teachers.front(); free_teachers.pop();
+        cout << "TEST " << teacher_indx << endl; 
 
+    }
 }
