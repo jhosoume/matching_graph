@@ -23,8 +23,13 @@ class Recruiting {
 public:
     Recruiting();
     void show() const;
+    void show_assignment() const;
     void read(const string& filename);
-private:
+    int find_teacher_indx(int teacher_id);
+    int find_school_indx(int school_id);
+    bool shouldChange(Position& pos, Teacher& teacher);
+    void galeShapley();
+
     vector<Teacher> teachers;
     vector<School> schools;
 };

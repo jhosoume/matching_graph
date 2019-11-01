@@ -24,8 +24,20 @@ void Recruiting::show() const {
         cout << "S id: " << school.id << endl;
         cout << "\tNum Pos: " << school.num_pos << endl;
         cout << "\tNum Skills Required ";
-        for (int req : school.skills_req) {
-            cout << req << " ";
+        for (Position pos : school.positions) {
+            cout << pos.skill_req << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+void Recruiting::show_assignment() const {
+    cout << "--------------------------------" << endl;
+    for (School school : schools) {
+        cout << "School of id " << school.id << " got the following teachers: " << endl;
+        for (Position pos : school.positions) {
+            if (pos.matched) cout << pos.teacher << " ";
         }
         cout << endl;
     }
@@ -86,4 +98,27 @@ void Recruiting::read(const string& filename) {
         schools.push_back(School(id, num_pos, school_reqs));
         getline(ifs, line);
     }
+    std::sort(teachers.begin(), teachers.end());
+}
+
+int Recruiting::find_teacher_indx(int teacher_id) {
+    for (int indx = 0; indx < teachers.size(); ++indx) {
+        if (teachers.at(indx).id == teacher_id) return indx;
+    }
+    return -1;
+}
+
+int Recruiting::find_school_indx(int school_id) {
+    for (int indx = 0; indx < schools.size(); ++indx) {
+        if (schools.at(indx).id == school_id) return indx;
+    }
+    return -1;
+}
+
+bool Recruiting::shouldChange(Position& pos, Teacher& teacher) {
+    
+}
+
+void Recruiting::galeShapley() {
+
 }
