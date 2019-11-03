@@ -116,7 +116,7 @@ int Recruiting::find_school_indx(int school_id) {
 }
 
 bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) {
-    if (teacher.num_skills != pos.skill_req) return false;
+    // if (teacher.num_skills != pos.skill_req) return false;
     // Compares  already in position with teacher that is applying to teacher
     // Pref is from teacher that is applying
     if (pos.teacher_pref > pref) return true;
@@ -125,14 +125,56 @@ bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) 
 
 void Recruiting::galeShapley() {
     queue<int> free_teachers;
-    Teacher teacher;
+    int teacher_indx;
+    int old_teacher_id;
+    int old_teacher_indx;
     for (int indx = 0; indx < teachers.size(); ++indx) {
-        teacher = teachers.at(indx);
-        if (!teacher.assigned) free_teachers.push(teacher.id);
+        Teacher& teacher = teachers.at(indx);
+        if (!teacher.assigned) free_teachers.push(indx);
     }
     while(!free_teachers.empty()) {
-        int teacher_indx = free_teachers.front(); free_teachers.pop();
-        cout << "TEST " << teacher_indx << endl; 
+        teacher_indx = free_teachers.front(); free_teachers.pop();
+        Teacher& teacher = teachers.at(teacher_indx);
+        for (int pref_indx = 0; pref_indx < teacher.school_prefs.size(); ++pref_indx) {
+            int school_indx = teacher.school_prefs.at(pref_indx);
+            School& school = schools.at(school_indx - 1);
+            for (int pos_indx = 0; pos_indx < school.positions.size(); ++pos_indx) {
+                Position& pos = school.positions.at(pos_indx);
+                // if (!pos.matched && teacher.num_skills >= pos.skill_req) {
+                if (!pos.matched) {
+                    school.assign_teacher(pos_indx, teacher, pref_indx);
+                    break;
+                } else if(pos.matched && shouldChange(pos, teacher, pref_indx)) {
+                    old_teacher_id = school.change_teacher(pos_indx, teacher, pref_indx);
+                    old_teacher_indx = find_teacher_indx(old_teacher_id);
+                    Teacher& old_teacher = teachers.at(old_teacher_indx);
+                    old_teacher.assigned = false;
+                    old_teacher.matched_school = -1;
+                    free_teachers.push(old_teacher_indx);
+                    break;
+                }
+            }
+            if (teacher.assigned) {
+                break;
+            }
+        }
+    }
+}
 
+int Recruiting::num_occupied() const {
+    int num_occ = 0;
+    for (const School& school : schools) {
+        for (const Position& pos : school.positions) {
+            if (pos.matched) ++num_occ;
+        }
+    }
+    return num_occ;
+}
+
+void Recruiting::unoccupied_teachers() const {
+    cout << "Unoccupied Teachers: " << endl;
+    for (Teacher teacher : teachers) {
+        if (!teacher.assigned)
+        cout << teacher.id << " ";
     }
 }

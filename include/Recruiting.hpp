@@ -32,6 +32,8 @@ public:
     bool shouldChange(Position& pos, Teacher& teacher, const int& pref);
     void swap_teacher(School& school, Position& pos);
     void galeShapley();
+    int num_occupied() const;
+    void unoccupied_teachers() const;
 
     vector<Teacher> teachers;
     vector<School> schools;
