@@ -20,6 +20,15 @@ using ::std::endl;
 using ::std::getline;
 using ::std::stoi;
 
+/**
+ * \class Recruiting
+ * \brief Class to store state values of a reacruigin in a matching problem
+ * This class is reponsible for performing the match between schools and teachers.
+ * \author: jhosoume
+ * \date: 2019/11/02 20:00:00
+ *
+ * Contact: ju.hosoume@gmail.com
+ */
 
 class Recruiting {
 public:

@@ -133,8 +133,11 @@ int Recruiting::find_school_indx(int school_id) {
 }
 
 bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) {
+    // Verifies if the teacher that wants the position have the requirements
     if (teacher.num_skills >= pos.skill_req) {
+        // Verifies if the current teacher also has the requirements
         if (pos.teacher.num_skills >= pos.skill_req) {
+            // If both have the requirements, check which has greater preference
             if (pos.teacher_pref > pref) {
                 return true;
             } else if (pos.teacher_pref == pref) {
@@ -144,9 +147,11 @@ bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) 
             return true;
         }
     } else {
+        // Verifies if the current teacher has the requirements
         if (pos.teacher.num_skills >= pos.skill_req) {
             return false;
         } else {
+            // If both dont have the requirements, check which has greater preference
             if (pos.teacher_pref > pref) {
                 return true;
             } else if (pos.teacher_pref == pref) {
@@ -158,25 +163,31 @@ bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) 
 }
 
 void Recruiting::galeShapley() {
+    // Start execution of the matching
     queue<int> free_teachers;
     int teacher_indx;
     int old_teacher_id;
     int old_teacher_indx;
+    // Get teachers not assigned
     for (int indx = 0; indx < teachers.size(); ++indx) {
         Teacher& teacher = teachers.at(indx);
         if (!teacher.assigned) free_teachers.push(indx);
     }
     while(!free_teachers.empty()) {
+        // Get first teacher
         teacher_indx = free_teachers.front(); free_teachers.pop();
         Teacher& teacher = teachers.at(teacher_indx);
+        // Run through teacher preferences
         for (int pref_indx = 0; pref_indx < teacher.school_prefs.size(); ++pref_indx) {
             int school_indx = teacher.school_prefs.at(pref_indx);
             School& school = schools.at(school_indx - 1);
             for (int pos_indx = 0; pos_indx < school.positions.size(); ++pos_indx) {
                 Position& pos = school.positions.at(pos_indx);
+                // If position is vacant, assign the teacher
                 if (!pos.matched) {
                     school.assign_teacher(pos_indx, teacher, pref_indx);
                     break;
+                // If position is occupied, check if the new teacher is a better match
                 } else if(pos.matched && shouldChange(pos, teacher, pref_indx)) {
                     old_teacher_id = school.change_teacher(pos_indx, teacher, pref_indx);
                     old_teacher_indx = find_teacher_indx(old_teacher_id);

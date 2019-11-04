@@ -9,6 +9,14 @@
 
 using ::std::vector;
 
+/**
+ * \class School
+ * \brief Class to store state values of a school in a matching problem
+ * \author: jhosoume
+ * \date: 2019/11/02 20:00:00
+ *
+ * Contact: ju.hosoume@gmail.com
+ */
 class School {
 public:
     School();

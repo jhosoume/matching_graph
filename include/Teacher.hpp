@@ -5,6 +5,14 @@
 
 using ::std::vector;
 
+/**
+ * \class Teacher
+ * \brief Class to store state values of a teacher in a matching problem
+ * \author: jhosoume
+ * \date: 2019/11/02 20:00:00
+ *
+ * Contact: ju.hosoume@gmail.com
+ */
 class Teacher {
 public:
     Teacher();

@@ -1,5 +1,10 @@
 #include "helper.hpp"
 
+
+/**
+ * Auxiliary function to split a string according to a delimiter.
+ * @return A vector with parts of the original string.
+ */
 vector<string> split(const string& str, const string& delim) {
     vector<string> parts;
     size_t start, end = 0;
