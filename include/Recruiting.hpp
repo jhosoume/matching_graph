@@ -26,6 +26,7 @@ public:
     Recruiting();
     void show() const;
     void show_assignment() const;
+    void show_assignment_fullinfo() const;
     void read(const string& filename);
     int find_teacher_indx(int teacher_id);
     int find_school_indx(int school_id);
@@ -34,6 +35,7 @@ public:
     void galeShapley();
     int num_occupied() const;
     void unoccupied_teachers() const;
+    void fullfill_gap();
 
     vector<Teacher> teachers;
     vector<School> schools;

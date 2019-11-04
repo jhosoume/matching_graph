@@ -16,6 +16,7 @@ public:
     int vacancies();
     void assign_teacher(const int& pos_indx, Teacher& teacher, const int& pref);
     bool is_full();
+    bool is_empty();
     int change_teacher(const int& pos_indx, Teacher& teacher, const int& pref);
 
     int id;

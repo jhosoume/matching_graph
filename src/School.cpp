@@ -39,6 +39,13 @@ bool School::is_full() {
     return true;
 }
 
+bool School::is_empty() {
+    for (Position pos : positions) {
+        if (pos.matched) return false;
+    }
+    return true;
+}
+
 int School::change_teacher(const int& pos_indx, Teacher& teacher, const int& pref) {
     int old_teacher_id = positions.at(pos_indx).teacher.id;
     teacher.assigned = true;

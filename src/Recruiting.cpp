@@ -35,9 +35,26 @@ void Recruiting::show() const {
 void Recruiting::show_assignment() const {
     cout << "--------------------------------" << endl;
     for (School school : schools) {
-        cout << "School of id " << school.id << " got the following teachers: " << endl;
+        cout << "School of id " << school.id << endl;
         for (Position pos : school.positions) {
             if (pos.matched) cout << pos.teacher.id << " ";
+        }
+        cout << endl;
+    }
+
+}
+
+void Recruiting::show_assignment_fullinfo() const {
+    cout << "--------------------------------" << endl;
+    for (School school : schools) {
+        cout << "School of id " << school.id;
+        cout << " [Positions Skills (";
+        for (Position pos : school.positions) {
+            cout << " " << pos.skill_req << " ";
+        }
+        cout << ")] got the following teachers: " << endl;
+        for (Position pos : school.positions) {
+            if (pos.matched) cout << "P" << pos.teacher.id << "[" << pos.teacher.num_skills << "] ";
         }
         cout << endl;
     }
@@ -116,12 +133,27 @@ int Recruiting::find_school_indx(int school_id) {
 }
 
 bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) {
-    if (teacher.num_skills != pos.skill_req) return false;
-    // Compares  already in position with teacher that is applying to teacher
-    // Pref is from teacher that is applying
-    if (pos.teacher.num_skills == teacher.num_skills &&
-        pos.teacher_pref > pref) return true;
-    if (pos.teacher.num_skills != pos.skill_req) return true;
+    if (teacher.num_skills >= pos.skill_req) {
+        if (pos.teacher.num_skills >= pos.skill_req) {
+            if (pos.teacher_pref > pref) {
+                return true;
+            } else if (pos.teacher_pref == pref) {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        if (pos.teacher.num_skills >= pos.skill_req) {
+            return false;
+        } else {
+            if (pos.teacher_pref > pref) {
+                return true;
+            } else if (pos.teacher_pref == pref) {
+                return false;
+            }
+        }
+    }
     return false;
 }
 
@@ -142,7 +174,6 @@ void Recruiting::galeShapley() {
             School& school = schools.at(school_indx - 1);
             for (int pos_indx = 0; pos_indx < school.positions.size(); ++pos_indx) {
                 Position& pos = school.positions.at(pos_indx);
-                // if (!pos.matched && teacher.num_skills >= pos.skill_req) {
                 if (!pos.matched) {
                     school.assign_teacher(pos_indx, teacher, pref_indx);
                     break;
@@ -178,5 +209,19 @@ void Recruiting::unoccupied_teachers() const {
     for (Teacher teacher : teachers) {
         if (!teacher.assigned)
         cout << teacher.id << " ";
+    }
+}
+
+void Recruiting::fullfill_gap() {
+    vector<int> unoccupied_teachers_indx;
+    for (int indx = 0; indx < teachers.size(); ++indx) {
+        if (!teachers.at(indx).assigned)
+            unoccupied_teachers_indx.push_back(indx);
+    }
+    for (School& school : schools) {
+        if (school.is_empty()) {
+            std::sort(teachers.begin(), teachers.end());
+            school.assign_teacher(0, teachers.at(unoccupied_teachers_indx.back()), 0);
+        }
     }
 }

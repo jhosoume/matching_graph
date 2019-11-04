@@ -7,6 +7,7 @@ class Position {
 public:
     Position();
     Position(int skill_req);
+    bool operator< (const Position& other) const;
 
     int skill_req;
     bool matched;
