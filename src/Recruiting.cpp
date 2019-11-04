@@ -116,10 +116,12 @@ int Recruiting::find_school_indx(int school_id) {
 }
 
 bool Recruiting::shouldChange(Position& pos, Teacher& teacher, const int& pref) {
-    // if (teacher.num_skills != pos.skill_req) return false;
+    if (teacher.num_skills != pos.skill_req) return false;
     // Compares  already in position with teacher that is applying to teacher
     // Pref is from teacher that is applying
-    if (pos.teacher_pref > pref) return true;
+    if (pos.teacher.num_skills == teacher.num_skills &&
+        pos.teacher_pref > pref) return true;
+    if (pos.teacher.num_skills != pos.skill_req) return true;
     return false;
 }
 
